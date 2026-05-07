@@ -3,6 +3,13 @@
 A full-stack MERN application that scrapes top stories from Hacker News and allows authenticated users to bookmark stories.
 
 ---
+# Live URLs
+
+## Frontend
+https://scrapper-mern-dacby.vercel.app/
+
+## Backend
+https://scrapper-mern-dacby.onrender.com
 
 # Features
 
@@ -293,15 +300,6 @@ MongoDB Atlas
 
 ---
 
-# Live URLs
-
-## Frontend
-Add frontend deployment URL here
-
-## Backend
-https://scrapper-mern-dacby.onrender.com
-
----
 
 # Future Improvements
 
