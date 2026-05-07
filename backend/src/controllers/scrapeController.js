@@ -1,5 +1,3 @@
-// src/controllers/scrapeController.js
-
 import scrapeHackerNews from "../scraper/hackerNewsScraper.js";
 
 export const scrapeStories = async (

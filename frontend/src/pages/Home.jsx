@@ -1,5 +1,3 @@
-// src/pages/Home.jsx
-
 import {
   useEffect,
   useState,

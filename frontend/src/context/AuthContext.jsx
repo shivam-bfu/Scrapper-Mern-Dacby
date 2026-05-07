@@ -16,7 +16,7 @@ const AuthProvider = ({ children }) => {
       localStorage.getItem("token") || null
     );
 
-  // Persist Login
+  
   useEffect(() => {
     const storedUser =
       localStorage.getItem("user");
@@ -26,7 +26,7 @@ const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  // Login
+
   const login = (data) => {
     setUser(data.user);
     setToken(data.token);
@@ -42,7 +42,6 @@ const AuthProvider = ({ children }) => {
     );
   };
 
-  // Logout
   const logout = () => {
     setUser(null);
     setToken(null);

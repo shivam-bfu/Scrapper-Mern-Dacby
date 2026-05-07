@@ -1,5 +1,3 @@
-// src/routes/scrapeRoutes.js
-
 import express from "express";
 
 import { scrapeStories } from "../controllers/scrapeController.js";

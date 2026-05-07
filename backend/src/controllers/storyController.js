@@ -1,5 +1,3 @@
-// src/controllers/storyController.js
-
 import Story from "../models/Story.js";
 
 // GET ALL STORIES

@@ -1,5 +1,3 @@
-// src/routes/storyRoutes.js
-
 import express from "express";
 
 import {

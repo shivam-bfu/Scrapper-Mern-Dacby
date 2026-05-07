@@ -1,5 +1,3 @@
-// src/services/storyService.js
-
 import api from "../api/axios";
 
 // GET STORIES

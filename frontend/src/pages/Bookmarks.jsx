@@ -1,5 +1,3 @@
-// src/pages/Bookmarks.jsx
-
 import {
   useEffect,
   useState,

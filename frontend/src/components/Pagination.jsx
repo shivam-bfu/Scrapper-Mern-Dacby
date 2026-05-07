@@ -1,5 +1,3 @@
-// src/components/Pagination.jsx
-
 const Pagination = ({
   currentPage,
   totalPages,

@@ -1,5 +1,3 @@
-// src/components/StoryCard.jsx
-
 import { useState } from "react";
 
 import { toast } from "react-toastify";

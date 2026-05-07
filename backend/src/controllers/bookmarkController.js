@@ -1,5 +1,3 @@
-// src/controllers/bookmarkController.js
-
 import User from "../models/User.js";
 
 // TOGGLE BOOKMARK
