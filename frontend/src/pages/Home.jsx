@@ -1,52 +1,67 @@
 // src/pages/Home.jsx
 
-import { useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
 
 import StoryCard from "../components/StoryCard";
 import Pagination from "../components/Pagination";
+import Loader from "../components/Loader";
+
+import { getStories } from "../services/storyService";
 
 const Home = () => {
-  // TEMPORARY DUMMY DATA
-  const stories = [
-    {
-      id: 1,
-      title: "OpenAI releases a new AI coding assistant",
-      url: "https://news.ycombinator.com",
-      points: 542,
-      author: "openai_dev",
-      postedAt: "1 hour ago",
-    },
-    {
-      id: 2,
-      title: "Why TypeScript is dominating frontend development",
-      url: "https://news.ycombinator.com",
-      points: 387,
-      author: "frontend_master",
-      postedAt: "3 hours ago",
-    },
-    {
-      id: 3,
-      title: "Node.js performance improvements in latest release",
-      url: "https://news.ycombinator.com",
-      points: 291,
-      author: "node_core",
-      postedAt: "5 hours ago",
-    },
-    {
-      id: 4,
-      title: "MongoDB introduces new scaling architecture",
-      url: "https://news.ycombinator.com",
-      points: 245,
-      author: "mongodb_team",
-      postedAt: "7 hours ago",
-    },
-  ];
+  // Stories State
+  const [stories, setStories] =
+    useState([]);
+
+  // Loading State
+  const [loading, setLoading] =
+    useState(true);
 
   // Pagination State
   const [currentPage, setCurrentPage] =
     useState(1);
 
-  const totalPages = 5;
+  const [totalPages, setTotalPages] =
+    useState(1);
+
+  // Fetch Stories
+  const fetchStories = async () => {
+    try {
+      setLoading(true);
+
+      const data =
+        await getStories(
+          currentPage,
+          6
+        );
+
+      setStories(data.stories);
+
+      setTotalPages(
+        data.totalPages
+      );
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Run On Page Change
+  useEffect(() => {
+    fetchStories();
+  }, [currentPage]);
+
+  // Total Points
+  const totalPoints =
+    stories.reduce(
+      (acc, story) =>
+        acc + story.points,
+      0
+    );
 
   return (
     <div>
@@ -62,8 +77,10 @@ const Home = () => {
         </h1>
 
         <p className="mt-4 max-w-2xl text-lg text-zinc-400">
-          Discover the latest trending tech stories scraped directly
-          from Hacker News.
+          Discover the latest
+          trending tech stories
+          scraped directly from
+          Hacker News.
         </p>
 
         {/* Stats */}
@@ -81,7 +98,7 @@ const Home = () => {
 
           <div className="rounded-xl border border-zinc-700 bg-zinc-900 px-5 py-3">
             <p className="text-2xl font-bold text-white">
-              1.2K+
+              {totalPoints}
             </p>
 
             <p className="text-sm text-zinc-400">
@@ -102,7 +119,8 @@ const Home = () => {
           </h2>
 
           <p className="mt-1 text-zinc-400">
-            Sorted by points in descending order.
+            Sorted by points in
+            descending order.
           </p>
         </div>
 
@@ -113,23 +131,37 @@ const Home = () => {
 
       </div>
 
-      {/* Stories Grid */}
-      <div className="grid gap-6">
-        {stories.map((story) => (
-          <StoryCard
-            key={story.id}
-            story={story}
+      {/* Loading */}
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          
+          {/* Stories Grid */}
+          <div className="grid gap-6">
+            {stories.map((story) => (
+              <StoryCard
+                key={story._id}
+                story={story}
+              />
+            ))}
+          </div>
+
+          {/* Pagination */}
+          <Pagination
+            currentPage={
+              currentPage
+            }
+            totalPages={
+              totalPages
+            }
+            setCurrentPage={
+              setCurrentPage
+            }
           />
-        ))}
-      </div>
 
-      {/* Pagination */}
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        setCurrentPage={setCurrentPage}
-      />
-
+        </>
+      )}
     </div>
   );
 };

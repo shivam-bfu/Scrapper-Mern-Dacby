@@ -22,9 +22,9 @@ const scrapeHackerNews = async () => {
 
     const stories = [];
 
-    // Select Top 10 Stories
+    
     $(".athing")
-      .slice(0, 10)
+      .slice(0, 30)
       .each((index, element) => {
         const title = $(element)
           .find(".titleline a")
