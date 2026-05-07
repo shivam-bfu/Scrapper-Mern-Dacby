@@ -1,16 +1,27 @@
 // src/server.js
 
-import app from "./app.js";
 import dotenv from "dotenv";
-import connectDB from "./config/db.js";
 
 dotenv.config();
 
-// Connect Database
+import app from "./app.js";
+
+import connectDB from "./config/db.js";
+
+import scrapeHackerNews from "./scraper/hackerNewsScraper.js";
+
+// Connect DB
 connectDB();
 
-const PORT = process.env.PORT || 5000;
+const PORT =
+  process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// Start Server
+app.listen(PORT, async () => {
+  console.log(
+    `Server running on port ${PORT}`
+  );
+
+  // Auto Scrape on Startup
+  await scrapeHackerNews();
 });
