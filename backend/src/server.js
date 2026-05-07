@@ -8,7 +8,7 @@ import connectDB from "./config/db.js";
 
 import scrapeHackerNews from "./scraper/hackerNewsScraper.js";
 
-// Connect DB
+
 connectDB();
 
 const PORT =
