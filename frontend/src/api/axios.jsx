@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL:https://scrapper-mern-dacby.onrender.com,
+  baseURL:"https://scrapper-mern-dacby.onrender.com/api",
 });
 
 // Attach Token Automatically
