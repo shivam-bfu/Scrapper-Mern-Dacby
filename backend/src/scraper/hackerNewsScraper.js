@@ -10,11 +10,18 @@ const scrapeHackerNews = async () => {
     );
 
     // Fetch HTML
-    const { data } =
-      await axios.get(
-        "https://news.ycombinator.com"
-      );
+   const { data } =
+  await axios.get(
+    "https://news.ycombinator.com",
+    {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0",
+      },
 
+      timeout: 10000,
+    }
+  );
     // Load HTML
     const $ = cheerio.load(data);
 
@@ -70,9 +77,11 @@ const scrapeHackerNews = async () => {
     );
   } catch (error) {
     console.error(
-      "Scraper Error:",
-      error.message
-    );
+  "Scraper Error:",
+  error.response?.data ||
+    error.message ||
+    error
+);
   }
 };
 
