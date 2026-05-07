@@ -1,16 +1,31 @@
 // src/pages/Login.jsx
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+
+import {
+  Link,
+  useNavigate,
+} from "react-router-dom";
+
 import { toast } from "react-toastify";
 
-const Login = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+import { loginUser } from "../services/authService";
 
-  const [errors, setErrors] = useState({});
+import useAuth from "../hooks/useAuth";
+
+const Login = () => {
+  const navigate = useNavigate();
+
+  const { login } = useAuth();
+
+  const [formData, setFormData] =
+    useState({
+      email: "",
+      password: "",
+    });
+
+  const [errors, setErrors] =
+    useState({});
 
   // Regex
   const emailRegex =
@@ -23,7 +38,8 @@ const Login = () => {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]:
+        e.target.value,
     });
 
     setErrors({
@@ -38,43 +54,77 @@ const Login = () => {
 
     // Email
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = "Invalid email format";
+      newErrors.email =
+        "Email is required";
+    } else if (
+      !emailRegex.test(
+        formData.email
+      )
+    ) {
+      newErrors.email =
+        "Invalid email format";
     }
 
     // Password
-    if (!formData.password.trim()) {
-      newErrors.password = "Password is required";
-    } else if (!passwordRegex.test(formData.password)) {
+    if (
+      !formData.password.trim()
+    ) {
+      newErrors.password =
+        "Password is required";
+    } else if (
+      !passwordRegex.test(
+        formData.password
+      )
+    ) {
       newErrors.password =
         "Password must be at least 6 characters";
     }
 
     setErrors(newErrors);
 
-    return Object.keys(newErrors).length === 0;
+    return (
+      Object.keys(newErrors)
+        .length === 0
+    );
   };
 
   // Submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async (
+    e
+  ) => {
     e.preventDefault();
 
     if (!validateForm()) {
-      toast.error("Please fix the errors");
+      toast.error(
+        "Please fix the errors"
+      );
       return;
     }
 
-    toast.success("Login Successful 🚀");
+    try {
+      const data =
+        await loginUser(formData);
 
-    console.log(formData);
+      // Save User + Token
+      login(data);
 
-    // API Call here
+      toast.success(
+        "Login Successful 🚀"
+      );
+
+      // Redirect
+      navigate("/");
+    } catch (error) {
+      toast.error(
+        error.response?.data
+          ?.message ||
+          "Login Failed"
+      );
+    }
   };
 
   return (
     <div className="flex min-h-[80vh] items-center justify-center px-4">
-      
       <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 p-8 shadow-lg">
         
         {/* Heading */}
@@ -84,7 +134,8 @@ const Login = () => {
           </h1>
 
           <p className="mt-2 text-zinc-400">
-            Login to continue bookmarking stories.
+            Login to continue
+            bookmarking stories.
           </p>
         </div>
 
@@ -130,7 +181,9 @@ const Login = () => {
             <input
               type="password"
               name="password"
-              value={formData.password}
+              value={
+                formData.password
+              }
               onChange={handleChange}
               placeholder="Enter your password"
               className={`w-full rounded-lg border bg-zinc-950 px-4 py-3 text-white outline-none transition
@@ -155,12 +208,12 @@ const Login = () => {
           >
             Login
           </button>
-
         </form>
 
         {/* Footer */}
         <p className="mt-6 text-center text-sm text-zinc-400">
-          Don&apos;t have an account?{" "}
+          Don&apos;t have an
+          account?{" "}
           <Link
             to="/register"
             className="font-medium text-orange-500 hover:text-orange-400"
@@ -168,9 +221,7 @@ const Login = () => {
             Register
           </Link>
         </p>
-
       </div>
-
     </div>
   );
 };

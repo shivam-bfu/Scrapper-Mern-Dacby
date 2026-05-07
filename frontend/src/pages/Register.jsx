@@ -1,18 +1,33 @@
 // src/pages/Register.jsx
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+
+import {
+  Link,
+  useNavigate,
+} from "react-router-dom";
+
 import { toast } from "react-toastify";
 
-const Register = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
+import { registerUser } from "../services/authService";
 
-  const [errors, setErrors] = useState({});
+import useAuth from "../hooks/useAuth";
+
+const Register = () => {
+  const navigate = useNavigate();
+
+  const { login } = useAuth();
+
+  const [formData, setFormData] =
+    useState({
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
+
+  const [errors, setErrors] =
+    useState({});
 
   // Regex
   const emailRegex =
@@ -25,7 +40,8 @@ const Register = () => {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]:
+        e.target.value,
     });
 
     setErrors({
@@ -40,26 +56,42 @@ const Register = () => {
 
     // Name
     if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
+      newErrors.name =
+        "Name is required";
     }
 
     // Email
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = "Invalid email format";
+      newErrors.email =
+        "Email is required";
+    } else if (
+      !emailRegex.test(
+        formData.email
+      )
+    ) {
+      newErrors.email =
+        "Invalid email format";
     }
 
     // Password
-    if (!formData.password.trim()) {
-      newErrors.password = "Password is required";
-    } else if (!passwordRegex.test(formData.password)) {
+    if (
+      !formData.password.trim()
+    ) {
+      newErrors.password =
+        "Password is required";
+    } else if (
+      !passwordRegex.test(
+        formData.password
+      )
+    ) {
       newErrors.password =
         "Must contain 1 uppercase & 1 number";
     }
 
     // Confirm Password
-    if (!formData.confirmPassword.trim()) {
+    if (
+      !formData.confirmPassword.trim()
+    ) {
       newErrors.confirmPassword =
         "Please confirm your password";
     } else if (
@@ -72,28 +104,51 @@ const Register = () => {
 
     setErrors(newErrors);
 
-    return Object.keys(newErrors).length === 0;
+    return (
+      Object.keys(newErrors)
+        .length === 0
+    );
   };
 
   // Submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async (
+    e
+  ) => {
     e.preventDefault();
 
     if (!validateForm()) {
-      toast.error("Please fix the form errors");
+      toast.error(
+        "Please fix the form errors"
+      );
       return;
     }
 
-    toast.success("Account Created Successfully 🚀");
+    try {
+      const data =
+        await registerUser(
+          formData
+        );
 
-    console.log(formData);
+      // Save User + Token
+      login(data);
 
-    // API CALL HERE
+      toast.success(
+        "Account Created Successfully 🚀"
+      );
+
+      // Redirect
+      navigate("/");
+    } catch (error) {
+      toast.error(
+        error.response?.data
+          ?.message ||
+          "Registration Failed"
+      );
+    }
   };
 
   return (
     <div className="flex min-h-[80vh] items-center justify-center px-4">
-      
       <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 p-8 shadow-lg">
         
         {/* Heading */}
@@ -103,7 +158,8 @@ const Register = () => {
           </h1>
 
           <p className="mt-2 text-zinc-400">
-            Join and start bookmarking stories.
+            Join and start bookmarking
+            stories.
           </p>
         </div>
 
@@ -176,7 +232,9 @@ const Register = () => {
             <input
               type="password"
               name="password"
-              value={formData.password}
+              value={
+                formData.password
+              }
               onChange={handleChange}
               placeholder="Create password"
               className={`w-full rounded-lg border bg-zinc-950 px-4 py-3 text-white outline-none transition
@@ -188,7 +246,9 @@ const Register = () => {
             />
 
             <p className="mt-2 text-xs text-zinc-500">
-              Must contain 6+ characters, 1 uppercase letter & 1 number
+              Must contain 6+
+              characters, 1 uppercase
+              letter & 1 number
             </p>
 
             {errors.password && (
@@ -207,7 +267,9 @@ const Register = () => {
             <input
               type="password"
               name="confirmPassword"
-              value={formData.confirmPassword}
+              value={
+                formData.confirmPassword
+              }
               onChange={handleChange}
               placeholder="Confirm password"
               className={`w-full rounded-lg border bg-zinc-950 px-4 py-3 text-white outline-none transition
@@ -220,12 +282,14 @@ const Register = () => {
 
             {errors.confirmPassword && (
               <p className="mt-2 text-sm text-red-500">
-                {errors.confirmPassword}
+                {
+                  errors.confirmPassword
+                }
               </p>
             )}
           </div>
 
-          {/* Terms Checkbox */}
+          {/* Terms */}
           <div className="flex items-start gap-3">
             <input
               type="checkbox"
@@ -233,7 +297,8 @@ const Register = () => {
             />
 
             <p className="text-sm text-zinc-400">
-              I agree to the terms and conditions.
+              I agree to the terms
+              and conditions.
             </p>
           </div>
 
@@ -244,12 +309,12 @@ const Register = () => {
           >
             Create Account
           </button>
-
         </form>
 
         {/* Footer */}
         <p className="mt-6 text-center text-sm text-zinc-400">
-          Already have an account?{" "}
+          Already have an
+          account?{" "}
           <Link
             to="/login"
             className="font-medium text-orange-500 hover:text-orange-400"
@@ -257,9 +322,7 @@ const Register = () => {
             Login
           </Link>
         </p>
-
       </div>
-
     </div>
   );
 };

@@ -1,95 +1,88 @@
+// src/components/Navbar.jsx
 
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+import useAuth from "../hooks/useAuth";
 
 const Navbar = () => {
-  const navigate = useNavigate();
-
-  // TEMPORARY
-  // Later replace with Context API
-  const token = localStorage.getItem("token");
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
+  const { user, logout } =
+    useAuth();
 
   return (
-    <nav className="w-full border-b border-zinc-800 bg-zinc-950 text-white">
+    <header className="border-b border-zinc-800 bg-zinc-900">
+      
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         
         {/* Logo */}
         <Link
           to="/"
-          className="text-2xl font-bold tracking-tight text-orange-500"
+          className="text-2xl font-bold text-white"
         >
           HackerNews
+          <span className="text-orange-500">
+            Hub
+          </span>
         </Link>
 
         {/* Nav Links */}
-        <div className="flex items-center gap-6">
-          <NavLink
+        <nav className="flex items-center gap-4">
+          
+          <Link
             to="/"
-            className={({ isActive }) =>
-              `transition ${
-                isActive
-                  ? "text-orange-500"
-                  : "text-zinc-300 hover:text-white"
-              }`
-            }
+            className="text-zinc-300 transition hover:text-orange-500"
           >
             Home
-          </NavLink>
+          </Link>
 
-          {token && (
-            <NavLink
-              to="/bookmarks"
-              className={({ isActive }) =>
-                `transition ${
-                  isActive
-                    ? "text-orange-500"
-                    : "text-zinc-300 hover:text-white"
-                }`
-              }
-            >
-              Bookmarks
-            </NavLink>
-          )}
-
-          {!token ? (
+          {user ? (
             <>
-              <NavLink
-                to="/login"
-                className={({ isActive }) =>
-                  `transition ${
-                    isActive
-                      ? "text-orange-500"
-                      : "text-zinc-300 hover:text-white"
-                  }`
-                }
+              
+              <Link
+                to="/bookmarks"
+                className="text-zinc-300 transition hover:text-orange-500"
               >
-                Login
-              </NavLink>
+                Bookmarks
+              </Link>
 
-              <NavLink
-                to="/register"
-                className={({ isActive }) =>
-                  `rounded-lg bg-orange-500 px-4 py-2 font-medium text-white transition hover:bg-orange-600`
-                }
+              {/* User */}
+              <div className="hidden rounded-lg border border-zinc-700 px-3 py-2 text-sm text-zinc-300 md:block">
+                {user.name}
+              </div>
+
+              {/* Logout */}
+              <button
+                onClick={logout}
+                className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-orange-600"
               >
-                Register
-              </NavLink>
+                Logout
+              </button>
+
             </>
           ) : (
-            <button
-              onClick={handleLogout}
-              className="rounded-lg bg-red-500 px-4 py-2 font-medium text-white transition hover:bg-red-600"
-            >
-              Logout
-            </button>
+            <>
+              
+              <Link
+                to="/login"
+                className="text-zinc-300 transition hover:text-orange-500"
+              >
+                Login
+              </Link>
+
+              <Link
+                to="/register"
+                className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-orange-600"
+              >
+                Register
+              </Link>
+
+            </>
           )}
-        </div>
+
+        </nav>
+
       </div>
-    </nav>
+
+    </header>
   );
 };
 

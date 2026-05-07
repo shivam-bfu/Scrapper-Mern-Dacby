@@ -2,17 +2,24 @@
 
 import { Navigate } from "react-router-dom";
 
-const ProtectedRoute = ({ children }) => {
-  // TEMPORARY AUTH CHECK
-  // Later replace with Context API
-  const token = localStorage.getItem("token");
+import useAuth from "../hooks/useAuth";
 
-  // If no token -> redirect to login
+const ProtectedRoute = ({
+  children,
+}) => {
+  const { token } = useAuth();
+
+  // Not Logged In
   if (!token) {
-    return <Navigate to="/login" replace />;
+    return (
+      <Navigate
+        to="/login"
+        replace
+      />
+    );
   }
 
-  // If authenticated -> render page
+  // Logged In
   return children;
 };
 
