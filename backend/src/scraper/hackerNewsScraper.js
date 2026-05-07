@@ -17,9 +17,7 @@ const scrapeHackerNews = async () => {
       headers: {
         "User-Agent":
           "Mozilla/5.0",
-      },
-
-      timeout: 10000,
+      }
     }
   );
     // Load HTML
