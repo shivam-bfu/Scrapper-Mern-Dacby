@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
-
 import useAuth from "../hooks/useAuth";
 
 const Navbar = () => {
@@ -10,7 +8,6 @@ const Navbar = () => {
 
   return (
     <header className="border-b border-zinc-800 bg-zinc-900">
-      
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         
         {/* Logo */}
@@ -24,10 +21,9 @@ const Navbar = () => {
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-4">
-          
           <Link
             to="/"
-            className="text-zinc-300 transition hover:text-orange-500"
+            className="text-zinc-300 hover:text-orange-500 transition"
           >
             Home
           </Link>
@@ -36,7 +32,7 @@ const Navbar = () => {
             <>
               <Link
                 to="/bookmarks"
-                className="text-zinc-300 transition hover:text-orange-500"
+                className="text-zinc-300 hover:text-orange-500 transition"
               >
                 Bookmarks
               </Link>
@@ -47,7 +43,7 @@ const Navbar = () => {
 
               <button
                 onClick={logout}
-                className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-orange-600"
+                className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600 transition"
               >
                 Logout
               </button>
@@ -56,14 +52,14 @@ const Navbar = () => {
             <>
               <Link
                 to="/login"
-                className="text-zinc-300 transition hover:text-orange-500"
+                className="text-zinc-300 hover:text-orange-500 transition"
               >
                 Login
               </Link>
 
               <Link
                 to="/register"
-                className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-orange-600"
+                className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600 transition"
               >
                 Register
               </Link>
@@ -71,23 +67,23 @@ const Navbar = () => {
           )}
         </nav>
 
-        {/* Mobile Button */}
+        {/* Mobile Button (no icons) */}
         <button
-          className="md:hidden text-white"
           onClick={() => setOpen(!open)}
+          className="md:hidden text-white text-2xl"
         >
-          {open ? <X /> : <Menu />}
+          ☰
         </button>
       </div>
 
       {/* Mobile Menu */}
       {open && (
-        <div className="md:hidden px-6 pb-4 space-y-3 bg-zinc-900 border-t border-zinc-800">
+        <div className="md:hidden px-6 pb-4 space-y-3 border-t border-zinc-800 bg-zinc-900">
           
           <Link
             to="/"
-            className="block text-zinc-300"
             onClick={() => setOpen(false)}
+            className="block text-zinc-300"
           >
             Home
           </Link>
@@ -96,8 +92,8 @@ const Navbar = () => {
             <>
               <Link
                 to="/bookmarks"
-                className="block text-zinc-300"
                 onClick={() => setOpen(false)}
+                className="block text-zinc-300"
               >
                 Bookmarks
               </Link>
@@ -120,16 +116,16 @@ const Navbar = () => {
             <>
               <Link
                 to="/login"
-                className="block text-zinc-300"
                 onClick={() => setOpen(false)}
+                className="block text-zinc-300"
               >
                 Login
               </Link>
 
               <Link
                 to="/register"
-                className="block rounded-lg bg-orange-500 px-4 py-2 text-white text-center"
                 onClick={() => setOpen(false)}
+                className="block rounded-lg bg-orange-500 px-4 py-2 text-white text-center"
               >
                 Register
               </Link>
